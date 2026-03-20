@@ -1,0 +1,29 @@
+version: '3.8'
+
+services:
+  sales-api:
+    build: .
+    ports:
+      - "8000:8000"
+    environment:
+      - PORT=8000
+    volumes:
+      - ./sales_time_series_dataset.csv:/app/sales_time_series_dataset.csv:ro
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+```
+
+## Step 5: Paste in editor
+
+Paste the code in the text box
+
+## Step 6: Click "Commit changes..."
+
+## Step 7: Add message
+```
+Add docker-compose configuration
