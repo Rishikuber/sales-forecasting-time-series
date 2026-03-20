@@ -45,10 +45,10 @@ def load_data():
         data = pd.read_csv('sales_time_series_dataset.csv')
         data['date'] = pd.to_datetime(data['date'])
         data = data.sort_values('date')
-        logger.info(f"✅ Data loaded: {len(data)} records")
+        logger.info(f"Data loaded: {len(data)} records")
         return data
     except Exception as e:
-        logger.error(f"❌ Error loading data: {str(e)}")
+        logger.error(f"Error loading data: {str(e)}")
         return None
 
 def calculate_mape(actual, predicted):
@@ -59,7 +59,7 @@ data = load_data()
 @app.get("/", tags=["Health"])
 async def root():
     return {
-        "status": "✅ Running",
+        "status": "Running",
         "message": "Sales Forecasting API is live!",
         "endpoints": {
             "forecast_arima": "POST /forecast/arima",
@@ -138,7 +138,7 @@ async def forecast_arima(periods: int = 30):
             confidence_lower=forecast_result['mean_ci_lower'].tolist(),
             confidence_upper=forecast_result['mean_ci_upper'].tolist(),
             mape=round(mape, 2),
-            message=f"✅ ARIMA forecast for next {periods} days"
+            message=f"ARIMA forecast for next {periods} days"
         )
     
     except Exception as e:
@@ -175,41 +175,15 @@ async def forecast_prophet(periods: int = 30):
             confidence_lower=future_forecast['yhat_lower'].tolist(),
             confidence_upper=future_forecast['yhat_upper'].tolist(),
             mape=4.23,
-            message=f"✅ Prophet forecast for next {periods} days"
+            message=f"Prophet forecast for next {periods} days"
         )
     
     except Exception as e:
         logger.error(f"Prophet Error: {str(e)}")
         raise HTTPException(status_code=500, detail=f"Forecasting error: {str(e)}")
 
-@app.post("/forecast/compare", tags=["Forecasting"])
-async def compare_models(periods: int = 30):
-    try:
-        arima_response = await forecast_arima(periods)
-        prophet_response = await forecast_prophet(periods)
-        
-        return {
-            "period": periods,
-            "arima": arima_response,
-            "prophet": prophet_response,
-            "note": "Compare both models to choose the best fit"
-        }
-    except Exception as e:
-        raise HTTPException(status_code=500, detail=str(e))
-
 if __name__ == "__main__":
     import uvicorn
     import os
     port = int(os.getenv("PORT", 8000))
     uvicorn.run(app, host="0.0.0.0", port=port)
-```
-
-## Step 5: Paste in editor
-
-Paste the code in the text box
-
-## Step 6: Click "Commit changes..."
-
-## Step 7: Add message
-```
-Add FastAPI application for forecasting
