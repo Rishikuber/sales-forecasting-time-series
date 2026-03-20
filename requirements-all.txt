@@ -1,0 +1,20 @@
+# Core API
+fastapi==0.104.1
+uvicorn==0.24.0
+
+# Data processing
+pandas==2.1.3
+numpy==1.26.2
+scikit-learn==1.3.2
+
+# Forecasting models
+statsmodels==0.13.5
+prophet==1.1.5
+
+# Web utilities
+python-multipart==0.0.6
+pydantic==2.5.0
+
+# Dashboard (optional)
+streamlit==1.28.1
+plotly==5.18.0
